@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chinese Reader</title>
+<style>
+  :root {
+    --paper:#f6f4f1; --ink:#23201d; --muted:#8a827a; --faint:#e6e1d9;
+    --accent:#c1362f; --accent-soft:rgba(193,54,47,0.13); --surface:#fffdfa; --shadow:rgba(40,32,24,0.14);
+    --cjk:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--paper:#191b21;--ink:#e9e6df;--muted:#8d8f98;--faint:#2b2e37;
+      --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);}
+  }
+  :root[data-theme="light"]{--paper:#f6f4f1;--ink:#23201d;--muted:#8a827a;--faint:#e6e1d9;
+    --accent:#c1362f;--accent-soft:rgba(193,54,47,0.13);--surface:#fffdfa;--shadow:rgba(40,32,24,0.14);}
+  :root[data-theme="dark"]{--paper:#191b21;--ink:#e9e6df;--muted:#8d8f98;--faint:#2b2e37;
+    --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);}
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);}
+  body{font-family:var(--serif);-webkit-font-smoothing:antialiased;}
+
+  .bar{display:flex;align-items:center;gap:1rem;max-width:42rem;margin:0 auto;padding:1.1rem 1.4rem;border-bottom:1px solid var(--faint);}
+  .brand{display:flex;align-items:center;gap:0.6rem;margin-right:auto;}
+  .seal{width:1.9rem;height:1.9rem;border-radius:4px;background:var(--accent);color:var(--paper);
+    display:grid;place-items:center;font-family:var(--cjk);font-size:1.15rem;line-height:1;}
+  .brand-txt{display:flex;flex-direction:column;line-height:1.1;}
+  .brand-txt b{font-family:var(--sans);font-weight:600;font-size:0.92rem;}
+  .brand-txt span{font-family:var(--sans);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-top:2px;}
+  .controls{display:flex;align-items:center;gap:0.6rem;}
+  .seg{display:inline-flex;border:1px solid var(--faint);border-radius:999px;overflow:hidden;background:var(--surface);}
+  .seg button{font-family:var(--cjk);font-size:0.95rem;border:0;background:transparent;color:var(--muted);padding:0.28rem 0.7rem;cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);}
+  .pill{font-family:var(--sans);font-size:0.72rem;border:1px solid var(--faint);border-radius:999px;background:var(--surface);color:var(--muted);padding:0.34rem 0.8rem;cursor:pointer;}
+  .pill[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:transparent;}
+  .pill .zh{font-family:var(--cjk);}
+
+  .reader{max-width:42rem;margin:0 auto;padding:1.6rem 1.4rem 4rem;}
+  .compose{margin-bottom:1.6rem;}
+  .compose summary{font-family:var(--sans);font-size:0.75rem;color:var(--muted);cursor:pointer;letter-spacing:0.02em;list-style:none;}
+  .compose summary::-webkit-details-marker{display:none;}
+  .compose summary::before{content:"＋ ";color:var(--accent);}
+  .compose[open] summary::before{content:"– ";}
+  .compose textarea{width:100%;margin-top:0.7rem;min-height:5rem;padding:0.7rem;border:1px solid var(--faint);
+    border-radius:8px;background:var(--surface);color:var(--ink);font-family:var(--cjk);font-size:1.05rem;line-height:1.7;resize:vertical;}
+  .compose .go{margin-top:0.6rem;font-family:var(--sans);font-size:0.8rem;border:0;border-radius:999px;
+    background:var(--accent);color:#fff;padding:0.4rem 1.1rem;cursor:pointer;}
+
+  .prose{font-family:var(--cjk);font-size:1.55rem;line-height:2.05;letter-spacing:0.01em;text-align:justify;min-height:3rem;}
+  .prose.loading{color:var(--muted);font-family:var(--sans);font-size:0.9rem;}
+  .w{display:inline-flex;flex-direction:column;align-items:center;vertical-align:bottom;cursor:pointer;border-radius:5px;transition:background .12s;}
+  .w:hover,.w:focus-visible{background:var(--accent-soft);outline:none;}
+  .w:focus-visible{box-shadow:0 0 0 2px var(--accent);}
+  .w .py{display:none;font-family:var(--sans);font-size:0.62rem;letter-spacing:0.01em;color:var(--muted);line-height:1.3;padding-top:0.15rem;min-height:0.9em;}
+  .show-pinyin .w .py{display:block;}
+  .w .hz{display:block;padding:0 0.02em;}
+  .w.marked .hz{border-bottom:0.09em solid var(--accent);}
+  .p{color:var(--ink);}
+
+  #pop{position:absolute;z-index:40;max-width:18rem;background:var(--surface);color:var(--ink);border:1px solid var(--faint);
+    border-radius:10px;box-shadow:0 8px 26px var(--shadow);padding:0.7rem 0.85rem;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .14s,transform .14s;}
+  #pop.on{opacity:1;transform:translateY(0);pointer-events:auto;}
+  #pop .pop-py{font-family:var(--sans);font-size:0.9rem;color:var(--accent);letter-spacing:0.02em;}
+  #pop .pop-gloss{font-family:var(--serif);font-size:1.02rem;margin-top:0.15rem;}
+  #pop .pop-alt{font-family:var(--sans);font-size:0.66rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-top:0.5rem;}
+
+  .status{max-width:42rem;margin:0 auto;padding:0 1.4rem 3rem;display:flex;align-items:center;gap:0.5rem;font-family:var(--sans);font-size:0.75rem;color:var(--muted);}
+  .status .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+  .status b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;}}
+  @media (max-width:480px){.prose{font-size:1.4rem;line-height:2.0;}.bar,.reader{padding-left:1rem;padding-right:1rem;}}
+</style>
+</head>
+<body>
+  <div class="bar">
+    <div class="brand">
+      <div class="seal">读</div>
+      <div class="brand-txt"><b>Reader</b><span>M1 · live segmentation</span></div>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Script">
+        <button id="simp" aria-pressed="true">简</button>
+        <button id="trad" aria-pressed="false">繁</button>
+      </div>
+      <button class="pill" id="pyToggle" aria-pressed="false"><span class="zh">拼音</span> pinyin</button>
+    </div>
+  </div>
+
+  <div class="reader">
+    <details class="compose">
+      <summary>paste any Chinese text</summary>
+      <textarea id="input" spellcheck="false"></textarea>
+      <button class="go" id="go">Read</button>
+    </details>
+    <p class="prose loading" id="prose">Segmenting…</p>
+  </div>
+
+  <div class="status">
+    <span class="dot"></span>
+    <span><b id="count">0</b> words marked · <b id="wc">0</b> word tokens · jieba + CC-CEDICT</span>
+  </div>
+
+  <div id="pop" role="dialog" aria-label="Word detail">
+    <div class="pop-py"></div>
+    <div class="pop-gloss"></div>
+    <div class="pop-alt">tap = “not yet”</div>
+  </div>
+
+<script>
+(function(){
+  const SAMPLE = "今天早上，我很早就起床了。窗外的天气非常好，阳光温暖。我决定出去走一走。街道上人不多，只有几个老人在公园里打太极。我买了一杯咖啡，然后慢慢地往河边走去。河水很清，几只小鸟在水面上飞来飞去。我坐在长椅上，一边喝咖啡，一边看书。那一刻，我觉得生活真美好。";
+  const prose = document.getElementById("prose");
+  const pop = document.getElementById("pop");
+  const countEl = document.getElementById("count");
+  const wcEl = document.getElementById("wc");
+  let script = "simp";
+  const marked = new Set();     // canonical (trad) keys — script-agnostic
+  let toks = [], nodes = [], openBtn = null;
+
+  document.getElementById("input").value = SAMPLE;
+
+  async function loadText(text){
+    prose.className = "prose loading";
+    prose.textContent = "Segmenting…";
+    let data;
+    try {
+      const r = await fetch("/api/segment", {method:"POST",
+        headers:{"Content-Type":"application/json"}, body: JSON.stringify({text})});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      data = await r.json();
+    } catch(e){
+      prose.textContent = "Could not reach the segmenter: " + e.message;
+      return;
+    }
+    toks = data.tokens;
+    render();
+  }
+
+  function render(){
+    prose.className = "prose";
+    prose.textContent = "";
+    nodes = [];
+    let words = 0;
+    toks.forEach((tok, i) => {
+      if(!tok.is_word){
+        const s = document.createElement("span");
+        s.className = "p";
+        s.textContent = tok.surface;
+        prose.appendChild(s);
+        nodes.push(null);
+        return;
+      }
+      words++;
+      const w = document.createElement("span");
+      w.className = "w" + (marked.has(tok.trad) ? " marked" : "");
+      w.tabIndex = 0; w.setAttribute("role","button"); w.dataset.i = i;
+      const py = document.createElement("span"); py.className = "py"; py.textContent = tok.pinyin || "";
+      const hz = document.createElement("span"); hz.className = "hz";
+      hz.textContent = (script === "simp" ? tok.simp : tok.trad) || tok.surface;
+      w.appendChild(py); w.appendChild(hz);
+      prose.appendChild(w);
+      nodes.push({tok, el:w, hz});
+    });
+    wcEl.textContent = words;
+    countEl.textContent = marked.size;
+  }
+
+  function openPop(node){
+    const {tok, el} = node;
+    pop.querySelector(".pop-py").textContent = tok.pinyin || "—";
+    pop.querySelector(".pop-gloss").textContent = tok.gloss || "— not in dictionary —";
+    pop.classList.add("on");
+    const r = el.getBoundingClientRect();
+    const pw = pop.offsetWidth, ph = pop.offsetHeight;
+    let left = window.scrollX + r.left + r.width/2 - pw/2;
+    left = Math.max(10, Math.min(left, window.scrollX + document.documentElement.clientWidth - pw - 10));
+    let top = window.scrollY + r.bottom + 8;
+    if(r.bottom + ph + 16 > window.innerHeight) top = window.scrollY + r.top - ph - 8;
+    pop.style.left = left + "px"; pop.style.top = top + "px";
+    openBtn = node;
+  }
+  function closePop(){ pop.classList.remove("on"); openBtn = null; }
+
+  function tapNode(w){
+    const node = nodes[+w.dataset.i];
+    if(!node) return;
+    marked.add(node.tok.trad);
+    node.el.classList.add("marked");
+    countEl.textContent = marked.size;
+    openPop(node);
+  }
+  prose.addEventListener("click", e => {
+    const w = e.target.closest(".w"); if(!w) return;
+    e.stopPropagation(); tapNode(w);
+  });
+  prose.addEventListener("keydown", e => {
+    if(e.key !== "Enter" && e.key !== " ") return;
+    const w = e.target.closest(".w"); if(!w) return;
+    e.preventDefault(); tapNode(w);
+  });
+  document.addEventListener("click", e => { if(!pop.contains(e.target)) closePop(); });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") closePop(); });
+
+  document.getElementById("simp").addEventListener("click", () => {
+    script = "simp";
+    document.getElementById("simp").setAttribute("aria-pressed","true");
+    document.getElementById("trad").setAttribute("aria-pressed","false");
+    render(); if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
+  });
+  document.getElementById("trad").addEventListener("click", () => {
+    script = "trad";
+    document.getElementById("trad").setAttribute("aria-pressed","true");
+    document.getElementById("simp").setAttribute("aria-pressed","false");
+    render(); if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
+  });
+  const pyBtn = document.getElementById("pyToggle");
+  pyBtn.addEventListener("click", () => {
+    const on = document.body.classList.toggle("show-pinyin");
+    pyBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
+  });
+  document.getElementById("go").addEventListener("click", () => {
+    const t = document.getElementById("input").value.trim();
+    marked.clear();
+    if(t) loadText(t);
+  });
+
+  loadText(SAMPLE);
+})();
+</script>
+</body>
+</html>

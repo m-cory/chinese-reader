@@ -1,0 +1,19 @@
+# Deploy stanza for the NAS. Copy this folder into nas-stack/services/chinese-reader/
+# and follow that repo's conventions. Build the image first (see Dockerfile), then:
+#   cd services/chinese-reader && docker compose up -d
+services:
+  chinese-reader:
+    image: chinese-reader:0.1.0        # pinned tag you build locally; not :latest
+    container_name: chinese-reader
+    restart: unless-stopped
+    # Run as the shared-folder owner so UGOS permission rewrites don't lock it out.
+    user: "${PUID}:${PGID}"
+    ports:
+      - "${CR_PORT}:8000"
+    volumes:
+      - ${DATA_ROOT}/chinese-reader:/data     # SQLite DB + uploaded texts — back this up
+    environment:
+      - CR_DATA_DIR=/data
+      - CR_PROMOTE_AFTER=${CR_PROMOTE_AFTER}
+      - CR_COVERAGE_TARGET=${CR_COVERAGE_TARGET}
+      - TZ=${TZ}

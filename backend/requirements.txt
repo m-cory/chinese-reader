@@ -1,0 +1,10 @@
+# Pip resolves versions compatible with the running Python (3.8 locally; the
+# Docker image uses 3.12). Pin exact versions in a lockfile when you deploy.
+fastapi
+uvicorn[standard]
+python-multipart
+jieba
+pypinyin
+opencc-python-reimplemented
+httpx
+pytest

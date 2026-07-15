@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# App data (never commit user data or the DB)
+backend/var/
+*.db
+
+# Fetched dictionary — CC-BY-SA, large, not vendored (sample IS committed)
+backend/app/data/cedict.u8
+
+# Secrets
+.env

@@ -1,0 +1,13 @@
+# Build context is the repo root (docker build -f deploy/Dockerfile .).
+# Keep it lean and reproducible: the venv is huge, and the dictionary is
+# fetched fresh inside the image (see deploy/Dockerfile) rather than copied
+# from a possibly-stale local checkout.
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+*.db
+backend/var/
+backend/app/data/cedict.u8
+.git/
+.gitignore
