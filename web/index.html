@@ -8,49 +8,70 @@
   :root {
     --paper:#f6f4f1; --ink:#23201d; --muted:#8a827a; --faint:#e6e1d9;
     --accent:#c1362f; --accent-soft:rgba(193,54,47,0.13); --surface:#fffdfa; --shadow:rgba(40,32,24,0.14);
+    --good:#2f7d4f; --good-soft:rgba(47,125,79,0.13);
     --cjk:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,Georgia,serif;
     --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
   }
   @media (prefers-color-scheme: dark){
     :root{--paper:#191b21;--ink:#e9e6df;--muted:#8d8f98;--faint:#2b2e37;
-      --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);}
+      --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);
+      --good:#6cc08a;--good-soft:rgba(108,192,138,0.15);}
   }
   :root[data-theme="light"]{--paper:#f6f4f1;--ink:#23201d;--muted:#8a827a;--faint:#e6e1d9;
-    --accent:#c1362f;--accent-soft:rgba(193,54,47,0.13);--surface:#fffdfa;--shadow:rgba(40,32,24,0.14);}
+    --accent:#c1362f;--accent-soft:rgba(193,54,47,0.13);--surface:#fffdfa;--shadow:rgba(40,32,24,0.14);
+    --good:#2f7d4f;--good-soft:rgba(47,125,79,0.13);}
   :root[data-theme="dark"]{--paper:#191b21;--ink:#e9e6df;--muted:#8d8f98;--faint:#2b2e37;
-    --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);}
+    --accent:#e0655c;--accent-soft:rgba(224,101,92,0.17);--surface:#21242c;--shadow:rgba(0,0,0,0.45);
+    --good:#6cc08a;--good-soft:rgba(108,192,138,0.15);}
 
   *{box-sizing:border-box;}
   html,body{margin:0;background:var(--paper);color:var(--ink);}
   body{font-family:var(--serif);-webkit-font-smoothing:antialiased;}
 
-  .bar{display:flex;align-items:center;gap:1rem;max-width:42rem;margin:0 auto;padding:1.1rem 1.4rem;border-bottom:1px solid var(--faint);}
+  .bar{display:flex;align-items:center;gap:0.9rem;max-width:42rem;margin:0 auto;padding:1.1rem 1.4rem;border-bottom:1px solid var(--faint);flex-wrap:wrap;}
   .brand{display:flex;align-items:center;gap:0.6rem;margin-right:auto;}
   .seal{width:1.9rem;height:1.9rem;border-radius:4px;background:var(--accent);color:var(--paper);
     display:grid;place-items:center;font-family:var(--cjk);font-size:1.15rem;line-height:1;}
   .brand-txt{display:flex;flex-direction:column;line-height:1.1;}
   .brand-txt b{font-family:var(--sans);font-weight:600;font-size:0.92rem;}
   .brand-txt span{font-family:var(--sans);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-top:2px;}
-  .controls{display:flex;align-items:center;gap:0.6rem;}
+  .controls{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
   .seg{display:inline-flex;border:1px solid var(--faint);border-radius:999px;overflow:hidden;background:var(--surface);}
   .seg button{font-family:var(--cjk);font-size:0.95rem;border:0;background:transparent;color:var(--muted);padding:0.28rem 0.7rem;cursor:pointer;}
+  .seg button.sans{font-family:var(--sans);font-size:0.8rem;}
   .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);}
   .pill{font-family:var(--sans);font-size:0.72rem;border:1px solid var(--faint);border-radius:999px;background:var(--surface);color:var(--muted);padding:0.34rem 0.8rem;cursor:pointer;}
   .pill[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:transparent;}
   .pill .zh{font-family:var(--cjk);}
 
-  .reader{max-width:42rem;margin:0 auto;padding:1.6rem 1.4rem 4rem;}
-  .compose{margin-bottom:1.6rem;}
-  .compose summary{font-family:var(--sans);font-size:0.75rem;color:var(--muted);cursor:pointer;letter-spacing:0.02em;list-style:none;}
-  .compose summary::-webkit-details-marker{display:none;}
-  .compose summary::before{content:"＋ ";color:var(--accent);}
-  .compose[open] summary::before{content:"– ";}
-  .compose textarea{width:100%;margin-top:0.7rem;min-height:5rem;padding:0.7rem;border:1px solid var(--faint);
-    border-radius:8px;background:var(--surface);color:var(--ink);font-family:var(--cjk);font-size:1.05rem;line-height:1.7;resize:vertical;}
-  .compose .go{margin-top:0.6rem;font-family:var(--sans);font-size:0.8rem;border:0;border-radius:999px;
-    background:var(--accent);color:#fff;padding:0.4rem 1.1rem;cursor:pointer;}
+  .reader{max-width:42rem;margin:0 auto;padding:1.2rem 1.4rem 4rem;}
 
+  .shelf{margin-bottom:1.5rem;border:1px solid var(--faint);border-radius:10px;background:var(--surface);}
+  .shelf summary{font-family:var(--sans);font-size:0.78rem;color:var(--muted);cursor:pointer;list-style:none;padding:0.7rem 0.9rem;letter-spacing:0.02em;}
+  .shelf summary::-webkit-details-marker{display:none;}
+  .shelf summary::before{content:"❯ ";color:var(--accent);display:inline-block;transition:transform .15s;}
+  .shelf[open] summary::before{transform:rotate(90deg);}
+  .shelf-body{padding:0 0.9rem 0.9rem;display:flex;flex-direction:column;gap:0.9rem;}
+  .lib{display:flex;flex-direction:column;gap:0.3rem;}
+  .lib-item{display:flex;align-items:baseline;gap:0.5rem;font-family:var(--sans);font-size:0.82rem;text-align:left;
+    border:0;background:transparent;color:var(--ink);padding:0.4rem 0.5rem;border-radius:6px;cursor:pointer;width:100%;}
+  .lib-item:hover{background:var(--accent-soft);}
+  .lib-item[aria-current="true"]{background:var(--accent-soft);color:var(--accent);}
+  .lib-item .t{font-family:var(--cjk);font-size:0.95rem;margin-right:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lib-item .meta{color:var(--muted);font-size:0.72rem;font-variant-numeric:tabular-nums;flex-shrink:0;}
+  .lib-empty{font-family:var(--sans);font-size:0.78rem;color:var(--muted);padding:0.3rem 0.5rem;}
+  .add{display:flex;flex-direction:column;gap:0.5rem;border-top:1px dashed var(--faint);padding-top:0.8rem;}
+  .add textarea{width:100%;min-height:4.5rem;padding:0.7rem;border:1px solid var(--faint);border-radius:8px;
+    background:var(--paper);color:var(--ink);font-family:var(--cjk);font-size:1.05rem;line-height:1.7;resize:vertical;}
+  .add-row{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;}
+  .btn{font-family:var(--sans);font-size:0.8rem;border:0;border-radius:999px;background:var(--accent);color:#fff;padding:0.42rem 1.15rem;cursor:pointer;}
+  .btn:disabled{opacity:0.5;cursor:default;}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--faint);}
+  .filelabel{font-family:var(--sans);font-size:0.76rem;color:var(--muted);cursor:pointer;text-decoration:underline dotted;}
+  .filelabel input{display:none;}
+
+  .doc-title{font-family:var(--sans);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin:0 0 0.7rem;}
   .prose{font-family:var(--cjk);font-size:1.55rem;line-height:2.05;letter-spacing:0.01em;text-align:justify;min-height:3rem;}
   .prose.loading{color:var(--muted);font-family:var(--sans);font-size:0.9rem;}
   .w{display:inline-flex;flex-direction:column;align-items:center;vertical-align:bottom;cursor:pointer;border-radius:5px;transition:background .12s;}
@@ -59,7 +80,8 @@
   .w .py{display:none;font-family:var(--sans);font-size:0.62rem;letter-spacing:0.01em;color:var(--muted);line-height:1.3;padding-top:0.15rem;min-height:0.9em;}
   .show-pinyin .w .py{display:block;}
   .w .hz{display:block;padding:0 0.02em;}
-  .w.marked .hz{border-bottom:0.09em solid var(--accent);}
+  /* learning = tapped "not yet": the only standing help. known & new render plain. */
+  .w.learning .hz{border-bottom:0.09em solid var(--accent);}
   .p{color:var(--ink);}
 
   #pop{position:absolute;z-index:40;max-width:18rem;background:var(--surface);color:var(--ink);border:1px solid var(--faint);
@@ -67,23 +89,36 @@
   #pop.on{opacity:1;transform:translateY(0);pointer-events:auto;}
   #pop .pop-py{font-family:var(--sans);font-size:0.9rem;color:var(--accent);letter-spacing:0.02em;}
   #pop .pop-gloss{font-family:var(--serif);font-size:1.02rem;margin-top:0.15rem;}
-  #pop .pop-alt{font-family:var(--sans);font-size:0.66rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-top:0.5rem;}
+  #pop .pop-actions{display:flex;align-items:center;gap:0.6rem;margin-top:0.6rem;padding-top:0.5rem;border-top:1px solid var(--faint);}
+  #pop .pop-hint{font-family:var(--sans);font-size:0.64rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-right:auto;}
+  #pop .know{font-family:var(--sans);font-size:0.74rem;border:0;border-radius:999px;background:var(--good-soft);color:var(--good);padding:0.3rem 0.7rem;cursor:pointer;white-space:nowrap;}
 
-  .status{max-width:42rem;margin:0 auto;padding:0 1.4rem 3rem;display:flex;align-items:center;gap:0.5rem;font-family:var(--sans);font-size:0.75rem;color:var(--muted);}
-  .status .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+  .status{max-width:42rem;margin:0 auto;padding:0 1.4rem 3rem;display:flex;align-items:center;gap:0.7rem;font-family:var(--sans);font-size:0.75rem;color:var(--muted);flex-wrap:wrap;}
+  .status .cov{color:var(--ink);font-weight:600;}
   .status b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;}
+  .status .learn b{color:var(--accent);}
+  .status .bank{margin-left:auto;}
+
+  .toast{position:fixed;left:50%;bottom:1.4rem;transform:translateX(-50%) translateY(1rem);background:var(--ink);color:var(--paper);
+    font-family:var(--sans);font-size:0.82rem;padding:0.6rem 1rem;border-radius:999px;box-shadow:0 8px 26px var(--shadow);
+    opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:60;max-width:90vw;text-align:center;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 
   @media (prefers-reduced-motion: reduce){*{transition:none !important;}}
-  @media (max-width:480px){.prose{font-size:1.4rem;line-height:2.0;}.bar,.reader{padding-left:1rem;padding-right:1rem;}}
+  @media (max-width:480px){.prose{font-size:1.4rem;line-height:2.0;}.bar,.reader,.status{padding-left:1rem;padding-right:1rem;}}
 </style>
 </head>
 <body>
   <div class="bar">
     <div class="brand">
       <div class="seal">读</div>
-      <div class="brand-txt"><b>Reader</b><span>M1 · live segmentation</span></div>
+      <div class="brand-txt"><b>Reader</b><span>reading builds your known-set</span></div>
     </div>
     <div class="controls">
+      <div class="seg" role="group" aria-label="Reader">
+        <button id="uAlex" class="sans" aria-pressed="true">alex</button>
+        <button id="uMei" class="sans" aria-pressed="false">mei</button>
+      </div>
       <div class="seg" role="group" aria-label="Script">
         <button id="simp" aria-pressed="true">简</button>
         <button id="trad" aria-pressed="false">繁</button>
@@ -93,88 +128,218 @@
   </div>
 
   <div class="reader">
-    <details class="compose">
-      <summary>paste any Chinese text</summary>
-      <textarea id="input" spellcheck="false"></textarea>
-      <button class="go" id="go">Read</button>
+    <details class="shelf" id="shelf">
+      <summary>Library &amp; import</summary>
+      <div class="shelf-body">
+        <div class="lib" id="lib"></div>
+        <div class="add">
+          <textarea id="input" spellcheck="false" placeholder="Paste any Chinese text…"></textarea>
+          <div class="add-row">
+            <button class="btn" id="go">Add &amp; read</button>
+            <label class="filelabel">upload .txt / .epub<input type="file" id="file" accept=".txt,.epub"></label>
+          </div>
+        </div>
+      </div>
     </details>
-    <p class="prose loading" id="prose">Segmenting…</p>
+
+    <p class="doc-title" id="docTitle"></p>
+    <p class="prose loading" id="prose">Loading…</p>
   </div>
 
   <div class="status">
-    <span class="dot"></span>
-    <span><b id="count">0</b> words marked · <b id="wc">0</b> word tokens · jieba + CC-CEDICT</span>
+    <span class="cov"><b id="covPct">–</b> known</span>
+    <span class="learn"><b id="learnN">0</b> learning</span>
+    <span>·</span>
+    <span><b id="wc">0</b> word tokens</span>
+    <button class="btn ghost bank" id="bank">✓ Done — bank session</button>
   </div>
 
   <div id="pop" role="dialog" aria-label="Word detail">
     <div class="pop-py"></div>
     <div class="pop-gloss"></div>
-    <div class="pop-alt">tap = “not yet”</div>
+    <div class="pop-actions">
+      <span class="pop-hint">tap = “not yet”</span>
+      <button class="know" id="knowBtn">✓ I know this</button>
+    </div>
   </div>
+
+  <div class="toast" id="toast"></div>
 
 <script>
 (function(){
   const SAMPLE = "今天早上，我很早就起床了。窗外的天气非常好，阳光温暖。我决定出去走一走。街道上人不多，只有几个老人在公园里打太极。我买了一杯咖啡，然后慢慢地往河边走去。河水很清，几只小鸟在水面上飞来飞去。我坐在长椅上，一边喝咖啡，一边看书。那一刻，我觉得生活真美好。";
-  const prose = document.getElementById("prose");
-  const pop = document.getElementById("pop");
-  const countEl = document.getElementById("count");
-  const wcEl = document.getElementById("wc");
+  const SESSION = "s" + Date.now();            // one page load = one reading session
+
+  const $ = id => document.getElementById(id);
+  const prose = $("prose"), pop = $("pop"), toastEl = $("toast");
+
+  let user = localStorage.getItem("cr_user") || "alex";
   let script = "simp";
-  const marked = new Set();     // canonical (trad) keys — script-agnostic
-  let toks = [], nodes = [], openBtn = null;
+  let curDoc = null;                            // {id, title}
+  let toks = [], nodes = [];
+  let statusByWord = {};                        // word_id -> "new"|"learning"|"known"
+  const tappedThisSession = new Set();          // word_ids tapped this session (excluded from exposure credit)
+  let openNode = null, toastTimer = null;
 
-  document.getElementById("input").value = SAMPLE;
+  // ---- tiny API helper ---------------------------------------------------
+  async function api(path, opts){
+    const r = await fetch("/api" + path, opts);
+    if(!r.ok) throw new Error("HTTP " + r.status + " on " + path);
+    return r.status === 204 ? null : r.json();
+  }
+  const jpost = (path, body) => api(path, {method:"POST",
+    headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
 
-  async function loadText(text){
-    prose.className = "prose loading";
-    prose.textContent = "Segmenting…";
-    let data;
-    try {
-      const r = await fetch("/api/segment", {method:"POST",
-        headers:{"Content-Type":"application/json"}, body: JSON.stringify({text})});
-      if(!r.ok) throw new Error("HTTP "+r.status);
-      data = await r.json();
-    } catch(e){
-      prose.textContent = "Could not reach the segmenter: " + e.message;
-      return;
+  function toast(msg){
+    toastEl.textContent = msg; toastEl.classList.add("on");
+    clearTimeout(toastTimer); toastTimer = setTimeout(()=>toastEl.classList.remove("on"), 2600);
+  }
+
+  // ---- library -----------------------------------------------------------
+  async function refreshLibrary(){
+    let docs = [];
+    try { docs = (await api("/documents")).documents; } catch(e){ return docs; }
+    const lib = $("lib");
+    lib.innerHTML = "";
+    if(!docs.length){
+      const d = document.createElement("div"); d.className = "lib-empty";
+      d.textContent = "No texts yet — add one below.";
+      lib.appendChild(d);
     }
+    docs.forEach(doc => {
+      const b = document.createElement("button");
+      b.className = "lib-item"; b.dataset.id = doc.id;
+      if(curDoc && curDoc.id === doc.id) b.setAttribute("aria-current","true");
+      const t = document.createElement("span"); t.className = "t"; t.textContent = doc.title;
+      const m = document.createElement("span"); m.className = "meta"; m.textContent = doc.words + " words";
+      b.appendChild(t); b.appendChild(m);
+      b.addEventListener("click", () => openDoc(doc.id));
+      lib.appendChild(b);
+    });
+    return docs;
+  }
+
+  // ---- reading a stored document ----------------------------------------
+  async function openDoc(id){
+    await flushExposures();                     // bank the doc we're leaving
+    prose.className = "prose loading"; prose.textContent = "Loading…";
+    tappedThisSession.clear();
+    let data;
+    try { data = await api("/documents/" + id + "/read?user=" + encodeURIComponent(user)); }
+    catch(e){ prose.textContent = "Could not load this text: " + e.message; return; }
+    curDoc = {id: data.id, title: data.title};
     toks = data.tokens;
+    statusByWord = {};
+    toks.forEach(t => { if(t.word_id != null) statusByWord[t.word_id] = t.status || "new"; });
+    $("docTitle").textContent = data.title;
     render();
+    refreshCoverage();
+    document.querySelectorAll(".lib-item").forEach(el =>
+      el.toggleAttribute("aria-current", +el.dataset.id === id));
+    $("shelf").open = false;
   }
 
   function render(){
-    prose.className = "prose";
-    prose.textContent = "";
-    nodes = [];
+    prose.className = "prose"; prose.textContent = ""; nodes = [];
     let words = 0;
     toks.forEach((tok, i) => {
       if(!tok.is_word){
-        const s = document.createElement("span");
-        s.className = "p";
-        s.textContent = tok.surface;
-        prose.appendChild(s);
-        nodes.push(null);
-        return;
+        const s = document.createElement("span"); s.className = "p"; s.textContent = tok.surface;
+        prose.appendChild(s); nodes.push(null); return;
       }
       words++;
       const w = document.createElement("span");
-      w.className = "w" + (marked.has(tok.trad) ? " marked" : "");
+      const st = tok.word_id != null ? (statusByWord[tok.word_id] || "new") : "new";
+      w.className = "w " + st;
       w.tabIndex = 0; w.setAttribute("role","button"); w.dataset.i = i;
       const py = document.createElement("span"); py.className = "py"; py.textContent = tok.pinyin || "";
       const hz = document.createElement("span"); hz.className = "hz";
       hz.textContent = (script === "simp" ? tok.simp : tok.trad) || tok.surface;
       w.appendChild(py); w.appendChild(hz);
       prose.appendChild(w);
-      nodes.push({tok, el:w, hz});
+      nodes.push({tok, el:w});
     });
-    wcEl.textContent = words;
-    countEl.textContent = marked.size;
+    $("wc").textContent = words;
+    updateCounts();
   }
 
+  function updateCounts(){
+    let learning = 0;
+    for(const k in statusByWord) if(statusByWord[k] === "learning") learning++;
+    $("learnN").textContent = learning;
+  }
+
+  // Apply a status to a word_id everywhere it appears on screen.
+  function setWordStatus(word_id, status){
+    statusByWord[word_id] = status;
+    nodes.forEach(n => {
+      if(n && n.tok.word_id === word_id){
+        n.el.classList.remove("new","learning","known");
+        n.el.classList.add(status);
+      }
+    });
+    updateCounts();
+  }
+
+  async function refreshCoverage(){
+    if(!curDoc) return;
+    try {
+      const c = await api("/coverage?user=" + encodeURIComponent(user) + "&document_id=" + curDoc.id);
+      $("covPct").textContent = c.total ? Math.round(c.pct * 100) + "%" : "–";
+    } catch(e){ /* leave prior value */ }
+  }
+
+  // ---- signals -----------------------------------------------------------
+  async function tapNode(w){
+    const node = nodes[+w.dataset.i]; if(!node) return;
+    const id = node.tok.word_id;
+    openPop(node);
+    if(id == null) return;                       // OOV / not in dict — nothing to persist
+    tappedThisSession.add(id);
+    setWordStatus(id, "learning");
+    try { await jpost("/tap", {user, word_id:id}); } catch(e){ toast("Tap didn't save: " + e.message); }
+  }
+
+  async function markKnown(){
+    if(!openNode) return;
+    const id = openNode.tok.word_id; if(id == null) return;
+    tappedThisSession.delete(id);
+    setWordStatus(id, "known");
+    closePop();
+    try { await jpost("/override", {user, word_id:id, status:"known"}); refreshCoverage(); }
+    catch(e){ toast("Couldn't save: " + e.message); }
+  }
+
+  // Words seen this session without a tap earn exposure credit toward promotion.
+  function exposurePayload(){
+    const ids = [];
+    for(const k in statusByWord){ const id = +k; if(!tappedThisSession.has(id)) ids.push(id); }
+    return ids.length ? {user, session:SESSION, word_ids:ids} : null;
+  }
+  async function flushExposures(){
+    const body = exposurePayload(); if(!body) return null;
+    try { return await jpost("/exposures", body); } catch(e){ return null; }
+  }
+  function flushExposuresBeacon(){                // fires on tab close / hide
+    const body = exposurePayload(); if(!body || !navigator.sendBeacon) return;
+    navigator.sendBeacon("/api/exposures", new Blob([JSON.stringify(body)], {type:"application/json"}));
+  }
+
+  async function bankSession(){
+    const res = await flushExposures();
+    refreshCoverage();
+    if(res && res.promoted_to_known > 0)
+      toast("Session banked · " + res.promoted_to_known + " word" + (res.promoted_to_known>1?"s":"") + " promoted to known 🎉");
+    else
+      toast("Session banked · streaks advanced. Words graduate after a few no-tap sessions.");
+  }
+
+  // ---- popover -----------------------------------------------------------
   function openPop(node){
     const {tok, el} = node;
     pop.querySelector(".pop-py").textContent = tok.pinyin || "—";
     pop.querySelector(".pop-gloss").textContent = tok.gloss || "— not in dictionary —";
+    $("knowBtn").style.display = tok.word_id != null ? "" : "none";
     pop.classList.add("on");
     const r = el.getBoundingClientRect();
     const pw = pop.offsetWidth, ph = pop.offsetHeight;
@@ -183,55 +348,87 @@
     let top = window.scrollY + r.bottom + 8;
     if(r.bottom + ph + 16 > window.innerHeight) top = window.scrollY + r.top - ph - 8;
     pop.style.left = left + "px"; pop.style.top = top + "px";
-    openBtn = node;
+    openNode = node;
   }
-  function closePop(){ pop.classList.remove("on"); openBtn = null; }
+  function closePop(){ pop.classList.remove("on"); openNode = null; }
 
-  function tapNode(w){
-    const node = nodes[+w.dataset.i];
-    if(!node) return;
-    marked.add(node.tok.trad);
-    node.el.classList.add("marked");
-    countEl.textContent = marked.size;
-    openPop(node);
-  }
+  // ---- events ------------------------------------------------------------
   prose.addEventListener("click", e => {
-    const w = e.target.closest(".w"); if(!w) return;
-    e.stopPropagation(); tapNode(w);
+    const w = e.target.closest(".w"); if(!w) return; e.stopPropagation(); tapNode(w);
   });
   prose.addEventListener("keydown", e => {
     if(e.key !== "Enter" && e.key !== " ") return;
-    const w = e.target.closest(".w"); if(!w) return;
-    e.preventDefault(); tapNode(w);
+    const w = e.target.closest(".w"); if(!w) return; e.preventDefault(); tapNode(w);
   });
+  $("knowBtn").addEventListener("click", e => { e.stopPropagation(); markKnown(); });
   document.addEventListener("click", e => { if(!pop.contains(e.target)) closePop(); });
   document.addEventListener("keydown", e => { if(e.key === "Escape") closePop(); });
 
-  document.getElementById("simp").addEventListener("click", () => {
-    script = "simp";
-    document.getElementById("simp").setAttribute("aria-pressed","true");
-    document.getElementById("trad").setAttribute("aria-pressed","false");
-    render(); if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
-  });
-  document.getElementById("trad").addEventListener("click", () => {
-    script = "trad";
-    document.getElementById("trad").setAttribute("aria-pressed","true");
-    document.getElementById("simp").setAttribute("aria-pressed","false");
-    render(); if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
-  });
-  const pyBtn = document.getElementById("pyToggle");
+  function setUser(u){
+    user = u; localStorage.setItem("cr_user", u);
+    $("uAlex").setAttribute("aria-pressed", u==="alex"?"true":"false");
+    $("uMei").setAttribute("aria-pressed", u==="mei"?"true":"false");
+    tappedThisSession.clear();
+    if(curDoc) openDoc(curDoc.id);              // reload with this user's status
+  }
+  $("uAlex").addEventListener("click", () => { if(user!=="alex") setUser("alex"); });
+  $("uMei").addEventListener("click", () => { if(user!=="mei") setUser("mei"); });
+
+  function setScript(s){
+    script = s;
+    $("simp").setAttribute("aria-pressed", s==="simp"?"true":"false");
+    $("trad").setAttribute("aria-pressed", s==="trad"?"true":"false");
+    render(); if(openNode) openPop(nodes[+openNode.el.dataset.i]);
+  }
+  $("simp").addEventListener("click", () => setScript("simp"));
+  $("trad").addEventListener("click", () => setScript("trad"));
+
+  const pyBtn = $("pyToggle");
   pyBtn.addEventListener("click", () => {
     const on = document.body.classList.toggle("show-pinyin");
     pyBtn.setAttribute("aria-pressed", on ? "true" : "false");
-    if(openBtn) openPop(nodes[+openBtn.el.dataset.i]);
-  });
-  document.getElementById("go").addEventListener("click", () => {
-    const t = document.getElementById("input").value.trim();
-    marked.clear();
-    if(t) loadText(t);
+    if(openNode) openPop(nodes[+openNode.el.dataset.i]);
   });
 
-  loadText(SAMPLE);
+  async function addDocument(title, text){
+    const doc = await jpost("/documents", {title, text});
+    await refreshLibrary();
+    await openDoc(doc.id);
+  }
+  $("go").addEventListener("click", async () => {
+    const t = $("input").value.trim(); if(!t) return;
+    const title = t.replace(/\s+/g," ").slice(0, 16) + (t.length > 16 ? "…" : "");
+    $("go").disabled = true;
+    try { await addDocument(title, t); $("input").value = ""; }
+    catch(e){ toast("Couldn't add: " + e.message); }
+    finally { $("go").disabled = false; }
+  });
+  $("file").addEventListener("change", async e => {
+    const f = e.target.files[0]; if(!f) return;
+    const fd = new FormData(); fd.append("file", f);
+    try {
+      const doc = await api("/documents/upload", {method:"POST", body:fd});
+      await refreshLibrary(); await openDoc(doc.id);
+    } catch(err){ toast("Upload failed: " + err.message); }
+    e.target.value = "";
+  });
+  $("bank").addEventListener("click", bankSession);
+
+  window.addEventListener("pagehide", flushExposuresBeacon);
+  document.addEventListener("visibilitychange", () => {
+    if(document.visibilityState === "hidden") flushExposuresBeacon();
+  });
+
+  // ---- boot --------------------------------------------------------------
+  (async function boot(){
+    setUser(user);                              // reflect persisted user in the UI
+    let docs = await refreshLibrary();
+    if(!docs.length){
+      try { await addDocument("一个早晨 · A Morning", SAMPLE); return; }
+      catch(e){ prose.textContent = "Backend unreachable: " + e.message; return; }
+    }
+    openDoc(docs[0].id);                         // most recent
+  })();
 })();
 </script>
 </body>

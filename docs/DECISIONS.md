@@ -42,6 +42,27 @@ build and are marked accordingly.
 - **Lifespan handler over `@app.on_event`.** The latter is deprecated in the
   installed FastAPI.
 
+## Stateful client (2026-07-15)
+
+- **The reader reads from the library, not `/segment`.** The stateless
+  `/segment` endpoint carries no `word_id`, so nothing could persist. The client
+  now stores every text as a document and reads it back via
+  `/documents/{id}/read?user=`, so each token has a stable `word_id` and this
+  user's `status`. Pasting a text adds it to the library rather than being a
+  throwaway.
+- **One page load = one reading session.** The exposure model promotes across
+  *distinct sessions*; the client mints a session id per load. Untapped words are
+  banked (`/exposures`) on tab-hide via `navigator.sendBeacon` and on an explicit
+  "Done" button. Re-banking within a load is idempotent (the server skips a word
+  whose `last_session` already matches).
+- **Only `learning` is visibly marked.** `known` and `new` render as plain text —
+  we never pre-highlight "unknown" because, by design, we don't know what the
+  reader doesn't know until they tap. Help (the accent underline) appears on tap
+  and fades when a word promotes to `known`. Progress lives in the status bar
+  (coverage %, learning count), not in decorating the prose.
+- **A tap marks every occurrence** of that word on screen, and counts are by
+  unique `word_id`, not token — the reader acts on a lexeme, not a position.
+
 ## Deferred (with the seam already in place)
 
 - Second **language** module — the seam exists; do not design its shape until a
