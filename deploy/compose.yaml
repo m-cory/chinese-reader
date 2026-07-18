@@ -3,7 +3,7 @@
 #   cd services/chinese-reader && docker compose up -d
 services:
   chinese-reader:
-    image: chinese-reader:0.1.0        # pinned tag you build locally; not :latest
+    image: chinese-reader:0.2.0        # pinned tag you build locally; not :latest
     container_name: chinese-reader
     restart: unless-stopped
     # Run as the shared-folder owner so UGOS permission rewrites don't lock it out.

@@ -58,6 +58,29 @@ def override(body: OverrideIn, conn: sqlite3.Connection = Depends(get_conn)) -> 
     return {"word_id": body.word_id, "status": status}
 
 
+@router.get("/words")
+def words(
+    user: str,
+    status: str = "learning",
+    conn: sqlite3.Connection = Depends(get_conn),
+) -> dict:
+    """This user's tracked words in one status bucket — feeds the vocab panel
+    and the Anki export."""
+    if status not in state_mod.STATUSES:
+        raise HTTPException(400, f"status must be one of {state_mod.STATUSES}, got {status!r}")
+    user_id = db.ensure_user(conn, user)
+    rows = conn.execute(
+        """SELECT w.id AS word_id, w.trad, w.simp, w.pinyin, w.gloss,
+                  s.status, s.taps, s.last_seen_at
+             FROM user_word_state s
+             JOIN word w ON w.id = s.word_id
+            WHERE s.user_id = ? AND s.status = ?
+            ORDER BY s.last_seen_at DESC, w.id DESC""",
+        (user_id, status),
+    ).fetchall()
+    return {"status": status, "words": [dict(r) for r in rows]}
+
+
 @router.get("/coverage")
 def coverage(
     user: str,

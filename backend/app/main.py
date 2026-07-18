@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from . import config, db
-from .routers import library, read, state
+from .routers import library, progress, read, state
 
 
 @asynccontextmanager
@@ -26,16 +26,17 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Chinese Reader", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Chinese Reader", version="0.2.0", lifespan=lifespan)
 
 app.include_router(read.router, prefix="/api", tags=["read"])
 app.include_router(library.router, prefix="/api", tags=["library"])
 app.include_router(state.router, prefix="/api", tags=["state"])
+app.include_router(progress.router, prefix="/api", tags=["progress"])
 
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"ok": True, "app": "chinese-reader", "version": "0.1.0"}
+    return {"ok": True, "app": "chinese-reader", "version": "0.2.0"}
 
 
 # Mount the static reader last so /api/* wins. Guard the mount so the app still
