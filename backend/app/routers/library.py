@@ -65,6 +65,41 @@ async def upload_document(
     return _store_document(conn, title or (file.filename or "Untitled"), text, "upload")
 
 
+class DocPatch(BaseModel):
+    title: str
+
+
+@router.patch("/documents/{document_id}")
+def rename_document(
+    document_id: int,
+    body: DocPatch,
+    conn: sqlite3.Connection = Depends(get_conn),
+) -> dict:
+    title = body.title.strip()
+    if not title:
+        raise HTTPException(400, "title is empty")
+    cur = conn.execute("UPDATE document SET title = ? WHERE id = ?", (title, document_id))
+    if cur.rowcount == 0:
+        raise HTTPException(404, f"no document {document_id}")
+    conn.commit()
+    return {"id": document_id, "title": title}
+
+
+@router.delete("/documents/{document_id}", status_code=204)
+def delete_document(
+    document_id: int,
+    conn: sqlite3.Connection = Depends(get_conn),
+) -> None:
+    """Remove a document and its stored tokens. Word knowledge (word /
+    user_word_state) deliberately survives — deleting a text never forgets words."""
+    row = conn.execute("SELECT id FROM document WHERE id = ?", (document_id,)).fetchone()
+    if not row:
+        raise HTTPException(404, f"no document {document_id}")
+    conn.execute("DELETE FROM document_token WHERE document_id = ?", (document_id,))
+    conn.execute("DELETE FROM document WHERE id = ?", (document_id,))
+    conn.commit()
+
+
 @router.get("/documents")
 def list_documents(conn: sqlite3.Connection = Depends(get_conn)) -> dict:
     rows = conn.execute(

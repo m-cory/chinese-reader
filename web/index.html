@@ -12,6 +12,7 @@
     --cjk:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,Georgia,serif;
     --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --prose-size:1.55rem;
   }
   @media (prefers-color-scheme: dark){
     :root{--paper:#191b21;--ink:#e9e6df;--muted:#8d8f98;--faint:#2b2e37;
@@ -60,6 +61,13 @@
   .lib-item[aria-current="true"]{background:var(--accent-soft);color:var(--accent);}
   .lib-item .t{font-family:var(--cjk);font-size:0.95rem;margin-right:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .lib-item .meta{color:var(--muted);font-size:0.72rem;font-variant-numeric:tabular-nums;flex-shrink:0;}
+  .lib-item .cov{font-size:0.72rem;font-variant-numeric:tabular-nums;flex-shrink:0;color:var(--muted);}
+  .lib-item .cov.good{color:var(--good);}
+  .lib-item .nxt{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--good);
+    background:var(--good-soft);border-radius:999px;padding:0.12rem 0.45rem;flex-shrink:0;}
+  .lib-item .act{border:0;background:transparent;color:var(--muted);font-size:0.78rem;cursor:pointer;
+    padding:0.1rem 0.3rem;border-radius:4px;flex-shrink:0;line-height:1;}
+  .lib-item .act:hover{color:var(--accent);background:var(--accent-soft);}
   .lib-empty{font-family:var(--sans);font-size:0.78rem;color:var(--muted);padding:0.3rem 0.5rem;}
   .add{display:flex;flex-direction:column;gap:0.5rem;border-top:1px dashed var(--faint);padding-top:0.8rem;}
   .add textarea{width:100%;min-height:4.5rem;padding:0.7rem;border:1px solid var(--faint);border-radius:8px;
@@ -72,7 +80,9 @@
   .filelabel input{display:none;}
 
   .doc-title{font-family:var(--sans);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin:0 0 0.7rem;}
-  .prose{font-family:var(--cjk);font-size:1.55rem;line-height:2.05;letter-spacing:0.01em;text-align:justify;min-height:3rem;}
+  .prose{font-family:var(--cjk);font-size:var(--prose-size);line-height:2.05;letter-spacing:0.01em;text-align:justify;min-height:3rem;}
+  .prose p{margin:0 0 1.1em;text-align:justify;}
+  .prose p:last-child{margin-bottom:0;}
   .prose.loading{color:var(--muted);font-family:var(--sans);font-size:0.9rem;}
   .w{display:inline-flex;flex-direction:column;align-items:center;vertical-align:bottom;cursor:pointer;border-radius:5px;transition:background .12s;}
   .w:hover,.w:focus-visible{background:var(--accent-soft);outline:none;}
@@ -92,6 +102,37 @@
   #pop .pop-actions{display:flex;align-items:center;gap:0.6rem;margin-top:0.6rem;padding-top:0.5rem;border-top:1px solid var(--faint);}
   #pop .pop-hint{font-family:var(--sans);font-size:0.64rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-right:auto;}
   #pop .know{font-family:var(--sans);font-size:0.74rem;border:0;border-radius:999px;background:var(--good-soft);color:var(--good);padding:0.3rem 0.7rem;cursor:pointer;white-space:nowrap;}
+  #pop .say{border:0;border-radius:999px;background:transparent;color:var(--muted);font-size:0.95rem;cursor:pointer;padding:0.2rem 0.4rem;line-height:1;}
+  #pop .say:hover{color:var(--accent);background:var(--accent-soft);}
+
+  .vocab-head{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;}
+  .vocab-list{display:flex;flex-direction:column;gap:0.15rem;max-height:19rem;overflow-y:auto;}
+  .vrow{display:flex;align-items:baseline;gap:0.6rem;font-family:var(--sans);font-size:0.8rem;padding:0.32rem 0.5rem;border-radius:6px;}
+  .vrow:hover{background:var(--accent-soft);}
+  .vrow .hz{font-family:var(--cjk);font-size:1.05rem;flex-shrink:0;}
+  .vrow .vpy{color:var(--accent);font-size:0.74rem;flex-shrink:0;}
+  .vrow .vg{color:var(--muted);font-size:0.74rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:auto;}
+  .vrow .vtaps{color:var(--muted);font-size:0.68rem;font-variant-numeric:tabular-nums;flex-shrink:0;}
+  .vrow .act{border:0;background:transparent;color:var(--muted);font-size:0.72rem;cursor:pointer;
+    padding:0.1rem 0.35rem;border-radius:4px;flex-shrink:0;white-space:nowrap;}
+  .vrow .act:hover{color:var(--good);background:var(--good-soft);}
+  .vocab-empty{font-family:var(--sans);font-size:0.78rem;color:var(--muted);padding:0.3rem 0.5rem;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;}
+  .stat{border:1px solid var(--faint);border-radius:8px;padding:0.55rem 0.7rem;background:var(--paper);}
+  .stat b{display:block;font-family:var(--sans);font-weight:600;font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .stat span{font-family:var(--sans);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+  .mg-title{display:flex;align-items:center;gap:0.5rem;font-family:var(--sans);font-size:0.64rem;
+    text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin:0.9rem 0 0.45rem;}
+  .mg-title .est{font-size:0.62rem;letter-spacing:0.04em;text-transform:none;color:var(--good);
+    background:var(--good-soft);border-radius:999px;padding:0.12rem 0.5rem;}
+  .meter{display:flex;align-items:center;gap:0.6rem;font-family:var(--sans);font-size:0.72rem;padding:0.16rem 0;}
+  .meter .ml{width:4.6rem;color:var(--ink);flex-shrink:0;}
+  .meter .track{flex:1;height:6px;border-radius:3px;background:var(--faint);overflow:hidden;}
+  .meter .fill{height:100%;border-radius:3px;background:var(--accent);}
+  .meter .fill.done{background:var(--good);}
+  .meter .mv{width:7rem;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;flex-shrink:0;}
+  @media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr);}.meter .mv{width:5.4rem;}}
 
   .status{max-width:42rem;margin:0 auto;padding:0 1.4rem 3rem;display:flex;align-items:center;gap:0.7rem;font-family:var(--sans);font-size:0.75rem;color:var(--muted);flex-wrap:wrap;}
   .status .cov{color:var(--ink);font-weight:600;}
@@ -124,6 +165,10 @@
         <button id="trad" aria-pressed="false">繁</button>
       </div>
       <button class="pill" id="pyToggle" aria-pressed="false"><span class="zh">拼音</span> pinyin</button>
+      <div class="seg" role="group" aria-label="Text size">
+        <button id="fontDn" class="sans" title="Smaller text">A−</button>
+        <button id="fontUp" class="sans" title="Larger text">A+</button>
+      </div>
     </div>
   </div>
 
@@ -142,8 +187,27 @@
       </div>
     </details>
 
+    <details class="shelf" id="vocabShelf">
+      <summary>Your words</summary>
+      <div class="shelf-body">
+        <div class="vocab-head">
+          <div class="seg" role="group" aria-label="Word status">
+            <button id="vLearning" class="sans" aria-pressed="true">learning</button>
+            <button id="vKnown" class="sans" aria-pressed="false">known</button>
+          </div>
+          <button class="btn ghost" id="ankiExport">Export for Anki</button>
+        </div>
+        <div class="vocab-list" id="vocabList"></div>
+      </div>
+    </details>
+
+    <details class="shelf" id="progressShelf">
+      <summary>Progress</summary>
+      <div class="shelf-body" id="progressBody"></div>
+    </details>
+
     <p class="doc-title" id="docTitle"></p>
-    <p class="prose loading" id="prose">Loading…</p>
+    <div class="prose loading" id="prose">Loading…</div>
   </div>
 
   <div class="status">
@@ -151,6 +215,7 @@
     <span class="learn"><b id="learnN">0</b> learning</span>
     <span>·</span>
     <span><b id="wc">0</b> word tokens</span>
+    <button class="pill" id="readNext" style="display:none" title="Closest text to your comfort band">next ↗ <span class="zh" id="readNextT"></span></button>
     <button class="btn ghost bank" id="bank">✓ Done — bank session</button>
   </div>
 
@@ -159,6 +224,7 @@
     <div class="pop-gloss"></div>
     <div class="pop-actions">
       <span class="pop-hint">tap = “not yet”</span>
+      <button class="say" id="sayBtn" title="Pronounce" style="display:none">🔊</button>
       <button class="know" id="knowBtn">✓ I know this</button>
     </div>
   </div>
@@ -196,9 +262,59 @@
   }
 
   // ---- library -----------------------------------------------------------
+  let ranking = [];                             // /next result, refreshed with the library
+
+  function nextSuggestion(){
+    // Top-ranked doc that isn't the one being read (and actually has words).
+    return ranking.find(r => r.total > 0 && (!curDoc || r.document_id !== curDoc.id)) || null;
+  }
+  function updateNextPill(){
+    const s = nextSuggestion(), btn = $("readNext");
+    // keep the library's "next" badge on the same doc as the pill
+    document.querySelectorAll(".lib-item .nxt").forEach(el => el.remove());
+    if(!s){ btn.style.display = "none"; return; }
+    btn.style.display = "";
+    $("readNextT").textContent = s.title.length > 10 ? s.title.slice(0,10) + "…" : s.title;
+    btn.dataset.id = s.document_id;
+    const item = document.querySelector('.lib-item[data-id="' + s.document_id + '"] .t');
+    if(item){
+      const n = document.createElement("span"); n.className = "nxt"; n.textContent = "next";
+      item.after(n);
+    }
+  }
+
+  async function renameDoc(doc){
+    const title = prompt("Rename text", doc.title);
+    if(!title || !title.trim() || title.trim() === doc.title) return;
+    try {
+      await api("/documents/" + doc.id, {method:"PATCH",
+        headers:{"Content-Type":"application/json"}, body:JSON.stringify({title:title.trim()})});
+      if(curDoc && curDoc.id === doc.id){ curDoc.title = title.trim(); $("docTitle").textContent = curDoc.title; }
+      refreshLibrary();
+    } catch(e){ toast("Rename failed: " + e.message); }
+  }
+  async function deleteDoc(doc){
+    if(!confirm('Delete "' + doc.title + '"? Your word knowledge is kept.')) return;
+    try { await api("/documents/" + doc.id, {method:"DELETE"}); }
+    catch(e){ toast("Delete failed: " + e.message); return; }
+    toast("Deleted · words you learned from it are kept");
+    const docs = await refreshLibrary();
+    if(curDoc && curDoc.id === doc.id){
+      curDoc = null;
+      if(docs.length) openDoc(docs[0].id);
+      else { $("docTitle").textContent = ""; prose.className = "prose loading";
+             prose.textContent = "No texts yet — add one from the library."; $("shelf").open = true; }
+    }
+  }
+
   async function refreshLibrary(){
     let docs = [];
     try { docs = (await api("/documents")).documents; } catch(e){ return docs; }
+    try { ranking = (await api("/next?user=" + encodeURIComponent(user))).ranked; }
+    catch(e){ ranking = []; }
+    const covById = {};
+    ranking.forEach(r => covById[r.document_id] = r);
+
     const lib = $("lib");
     lib.innerHTML = "";
     if(!docs.length){
@@ -211,16 +327,34 @@
       b.className = "lib-item"; b.dataset.id = doc.id;
       if(curDoc && curDoc.id === doc.id) b.setAttribute("aria-current","true");
       const t = document.createElement("span"); t.className = "t"; t.textContent = doc.title;
+      b.appendChild(t);
+      const r = covById[doc.id];
+      if(r && r.total > 0){
+        const c = document.createElement("span");
+        c.className = "cov" + (r.pct >= 0.9 ? " good" : "");
+        c.textContent = Math.round(r.pct * 100) + "%";
+        c.title = "words you know in this text";
+        b.appendChild(c);
+      }
       const m = document.createElement("span"); m.className = "meta"; m.textContent = doc.words + " words";
-      b.appendChild(t); b.appendChild(m);
+      b.appendChild(m);
+      const ren = document.createElement("span"); ren.className = "act"; ren.textContent = "✎";
+      ren.title = "Rename"; ren.setAttribute("role","button");
+      ren.addEventListener("click", e => { e.stopPropagation(); renameDoc(doc); });
+      const del = document.createElement("span"); del.className = "act"; del.textContent = "×";
+      del.title = "Delete"; del.setAttribute("role","button");
+      del.addEventListener("click", e => { e.stopPropagation(); deleteDoc(doc); });
+      b.appendChild(ren); b.appendChild(del);
       b.addEventListener("click", () => openDoc(doc.id));
       lib.appendChild(b);
     });
+    updateNextPill();
     return docs;
   }
 
   // ---- reading a stored document ----------------------------------------
   async function openDoc(id){
+    savePos();                                  // remember where we were in the doc we're leaving
     await flushExposures();                     // bank the doc we're leaving
     prose.className = "prose loading"; prose.textContent = "Loading…";
     tappedThisSession.clear();
@@ -233,19 +367,66 @@
     toks.forEach(t => { if(t.word_id != null) statusByWord[t.word_id] = t.status || "new"; });
     $("docTitle").textContent = data.title;
     render();
+    restorePos();
     refreshCoverage();
     document.querySelectorAll(".lib-item").forEach(el =>
       el.toggleAttribute("aria-current", +el.dataset.id === id));
+    updateNextPill();
     $("shelf").open = false;
   }
+
+  // ---- reading position (per user + document) ------------------------------
+  const posKey = () => curDoc ? "cr_pos:" + user + ":" + curDoc.id : null;
+  function savePos(){
+    const k = posKey(); if(!k) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if(max <= 0) return;
+    const ratio = window.scrollY / max;
+    if(ratio > 0.002) localStorage.setItem(k, ratio.toFixed(4));
+    else localStorage.removeItem(k);
+  }
+  function restorePos(){
+    const k = posKey(); if(!k) return;
+    const ratio = parseFloat(localStorage.getItem(k));
+    if(!ratio || isNaN(ratio)) { window.scrollTo(0, 0); return; }
+    // layout height settles a beat after render (fonts, shelf state) — retry briefly
+    let tries = 0;
+    (function attempt(){
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if(max > 0) window.scrollTo(0, ratio * max);
+      else if(++tries < 6) setTimeout(attempt, 100);
+    })();
+  }
+  let posTimer = null;
+  window.addEventListener("scroll", () => {
+    if(posTimer) return;
+    posTimer = setTimeout(() => { posTimer = null; savePos(); }, 400);
+  }, {passive:true});
 
   function render(){
     prose.className = "prose"; prose.textContent = ""; nodes = [];
     let words = 0;
+    // Paragraphs: a newline inside a non-word token starts a new <p>. A paragraph
+    // is only committed once it has content, so runs of blank lines collapse.
+    let para = document.createElement("p"), paraHasContent = false;
+    const commit = () => {
+      if(paraHasContent){ prose.appendChild(para); para = document.createElement("p"); paraHasContent = false; }
+    };
     toks.forEach((tok, i) => {
       if(!tok.is_word){
-        const s = document.createElement("span"); s.className = "p"; s.textContent = tok.surface;
-        prose.appendChild(s); nodes.push(null); return;
+        nodes.push(null);
+        const pieces = tok.surface.split("\n");
+        pieces.forEach((piece, j) => {
+          if(j > 0) commit();
+          piece = piece.replace(/\r/g, "");
+          if(!piece) return;
+          const s = document.createElement("span"); s.className = "p"; s.textContent = piece;
+          para.appendChild(s); paraHasContent = true;
+          if(piece.trim()) return;
+          // whitespace-only piece: real content, but alone it shouldn't force a paragraph
+          paraHasContent = para.children.length > 1;
+        });
+        return;
       }
       words++;
       const w = document.createElement("span");
@@ -256,9 +437,10 @@
       const hz = document.createElement("span"); hz.className = "hz";
       hz.textContent = (script === "simp" ? tok.simp : tok.trad) || tok.surface;
       w.appendChild(py); w.appendChild(hz);
-      prose.appendChild(w);
+      para.appendChild(w); paraHasContent = true;
       nodes.push({tok, el:w});
     });
+    commit();
     $("wc").textContent = words;
     updateCounts();
   }
@@ -328,6 +510,9 @@
   async function bankSession(){
     const res = await flushExposures();
     refreshCoverage();
+    refreshLibrary();                           // promotions can move coverage %s
+    if($("vocabShelf") && $("vocabShelf").open) refreshVocab();
+    if($("progressShelf") && $("progressShelf").open) refreshProgress();
     if(res && res.promoted_to_known > 0)
       toast("Session banked · " + res.promoted_to_known + " word" + (res.promoted_to_known>1?"s":"") + " promoted to known 🎉");
     else
@@ -352,6 +537,175 @@
   }
   function closePop(){ pop.classList.remove("on"); openNode = null; }
 
+  // ---- vocab panel ---------------------------------------------------------
+  let vocabStatus = "learning", vocabRows = [];
+
+  async function refreshVocab(){
+    const list = $("vocabList");
+    try {
+      vocabRows = (await api("/words?user=" + encodeURIComponent(user) + "&status=" + vocabStatus)).words;
+    } catch(e){ list.innerHTML = ""; vocabRows = []; return; }
+    list.innerHTML = "";
+    if(!vocabRows.length){
+      const d = document.createElement("div"); d.className = "vocab-empty";
+      d.textContent = vocabStatus === "learning"
+        ? "Nothing here yet — tap words you don't know while reading."
+        : "No known words yet — they graduate after a few no-tap sessions.";
+      list.appendChild(d);
+      return;
+    }
+    vocabRows.forEach(wd => {
+      const row = document.createElement("div"); row.className = "vrow";
+      const hz = document.createElement("span"); hz.className = "hz";
+      hz.textContent = script === "simp" ? wd.simp : wd.trad;
+      const py = document.createElement("span"); py.className = "vpy"; py.textContent = wd.pinyin || "";
+      const g = document.createElement("span"); g.className = "vg"; g.textContent = wd.gloss || "—";
+      g.title = wd.gloss || "";
+      row.appendChild(hz); row.appendChild(py); row.appendChild(g);
+      if(vocabStatus === "learning" && wd.taps > 1){
+        const tp = document.createElement("span"); tp.className = "vtaps";
+        tp.textContent = wd.taps + "×"; tp.title = "times tapped"; row.appendChild(tp);
+      }
+      const act = document.createElement("button"); act.className = "act";
+      const target = vocabStatus === "learning" ? "known" : "learning";
+      act.textContent = vocabStatus === "learning" ? "✓ known" : "↩ learning";
+      act.addEventListener("click", async () => {
+        try {
+          await jpost("/override", {user, word_id: wd.word_id, status: target});
+          if(statusByWord[wd.word_id] !== undefined) setWordStatus(wd.word_id, target);
+          refreshVocab(); refreshCoverage();
+        } catch(e){ toast("Couldn't save: " + e.message); }
+      });
+      row.appendChild(act);
+      list.appendChild(row);
+    });
+  }
+
+  function setVocabStatus(s){
+    vocabStatus = s;
+    $("vLearning").setAttribute("aria-pressed", s==="learning"?"true":"false");
+    $("vKnown").setAttribute("aria-pressed", s==="known"?"true":"false");
+    refreshVocab();
+  }
+  $("vLearning").addEventListener("click", () => setVocabStatus("learning"));
+  $("vKnown").addEventListener("click", () => setVocabStatus("known"));
+  $("vocabShelf").addEventListener("toggle", () => { if($("vocabShelf").open) refreshVocab(); });
+
+  $("ankiExport").addEventListener("click", () => {
+    if(!vocabRows.length){ toast("Nothing to export in this list."); return; }
+    // Same shape as miner.py's cards: Front = word + pinyin, Back = gloss.
+    const clean = s => (s || "").replace(/[\t\n]/g, " ");
+    const lines = vocabRows.map(wd => {
+      const hz = script === "simp" ? wd.simp : wd.trad;
+      return clean(hz + (wd.pinyin ? " " + wd.pinyin : "")) + "\t" + clean(wd.gloss || "");
+    });
+    const blob = new Blob([lines.join("\n") + "\n"], {type:"text/tab-separated-values;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "reader-" + vocabStatus + "-" + user + "-" + new Date().toISOString().slice(0,10) + ".txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast(lines.length + " card" + (lines.length>1?"s":"") + " exported — import as tab-separated in Anki");
+  });
+
+  // ---- progress panel --------------------------------------------------------
+  function meterRow(label, st){
+    const row = document.createElement("div"); row.className = "meter";
+    row.title = st.known + " of " + st.total + " known";
+    const ml = document.createElement("span"); ml.className = "ml"; ml.textContent = label;
+    const track = document.createElement("div"); track.className = "track";
+    const fill = document.createElement("div");
+    fill.className = "fill" + (st.pct >= 0.995 ? " done" : "");
+    fill.style.width = Math.min(100, Math.round(st.pct * 100)) + "%";
+    track.appendChild(fill);
+    const mv = document.createElement("span"); mv.className = "mv";
+    mv.textContent = st.known + "/" + st.total + " · " + Math.round(st.pct * 100) + "%";
+    row.appendChild(ml); row.appendChild(track); row.appendChild(mv);
+    return row;
+  }
+  function meterGroup(title, chip){
+    const h = document.createElement("div"); h.className = "mg-title";
+    h.appendChild(document.createTextNode(title));
+    if(chip){ const c = document.createElement("span"); c.className = "est"; c.textContent = chip; h.appendChild(c); }
+    return h;
+  }
+
+  async function refreshProgress(){
+    const body = $("progressBody");
+    body.innerHTML = '<div class="vocab-empty">Loading…</div>';
+    let p;
+    try { p = await api("/progress?user=" + encodeURIComponent(user)); }
+    catch(e){ body.innerHTML = '<div class="vocab-empty">Could not load progress.</div>'; return; }
+    body.innerHTML = "";
+
+    const stats = document.createElement("div"); stats.className = "stats";
+    [[p.words.known, "words known"],
+     [p.chars.known, "characters"],
+     [p.words.learning, "learning"],
+     ["+" + p.words.promoted_7d, "this week"]].forEach(([v, label]) => {
+      const s = document.createElement("div"); s.className = "stat";
+      const b = document.createElement("b"); b.textContent = v;
+      const sp = document.createElement("span"); sp.textContent = label;
+      s.appendChild(b); s.appendChild(sp); stats.appendChild(s);
+    });
+    body.appendChild(stats);
+
+    body.appendChild(meterGroup("HSK vocabulary", p.hsk_estimate ? "≈ HSK " + p.hsk_estimate : null));
+    p.hsk.forEach(h => body.appendChild(meterRow("HSK " + h.level, h)));
+
+    body.appendChild(meterGroup("Most common words"));
+    p.freq_words.forEach(b => body.appendChild(meterRow("top " + b.band, b)));
+
+    body.appendChild(meterGroup("Most common characters"));
+    p.freq_chars.forEach(b => body.appendChild(meterRow("top " + b.band, b)));
+  }
+  $("progressShelf").addEventListener("toggle", () => { if($("progressShelf").open) refreshProgress(); });
+
+  // ---- pronunciation (browser TTS, zero backend) ----------------------------
+  function zhVoice(){
+    if(!("speechSynthesis" in window)) return null;
+    const voices = speechSynthesis.getVoices().filter(v => /^zh\b|^zh-/i.test(v.lang));
+    if(!voices.length) return null;
+    const pref = script === "simp" ? /CN|Hans/i : /TW|HK|Hant/i;
+    return voices.find(v => pref.test(v.lang)) || voices[0];
+  }
+  function updateSayBtn(){
+    $("sayBtn").style.display = zhVoice() ? "" : "none";
+  }
+  if("speechSynthesis" in window){
+    speechSynthesis.addEventListener("voiceschanged", updateSayBtn);
+    updateSayBtn();
+  }
+  $("sayBtn").addEventListener("click", e => {
+    e.stopPropagation();
+    if(!openNode) return;
+    const v = zhVoice(); if(!v) return;
+    const tok = openNode.tok;
+    const u = new SpeechSynthesisUtterance((script === "simp" ? tok.simp : tok.trad) || tok.surface);
+    u.voice = v; u.lang = v.lang; u.rate = 0.85;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
+
+  // ---- text size -------------------------------------------------------------
+  const FONT_STEPS = [1.2, 1.35, 1.55, 1.75, 2.0];
+  let fontIdx = FONT_STEPS.indexOf(parseFloat(localStorage.getItem("cr_font")));
+  if(fontIdx < 0) fontIdx = 2;
+  function applyFont(){
+    document.documentElement.style.setProperty("--prose-size", FONT_STEPS[fontIdx] + "rem");
+    localStorage.setItem("cr_font", FONT_STEPS[fontIdx]);
+    $("fontDn").disabled = fontIdx === 0;
+    $("fontUp").disabled = fontIdx === FONT_STEPS.length - 1;
+  }
+  $("fontDn").addEventListener("click", () => { if(fontIdx > 0){ fontIdx--; applyFont(); } });
+  $("fontUp").addEventListener("click", () => { if(fontIdx < FONT_STEPS.length - 1){ fontIdx++; applyFont(); } });
+  applyFont();
+
+  $("readNext").addEventListener("click", () => {
+    const id = +$("readNext").dataset.id;
+    if(id) openDoc(id);
+  });
+
   // ---- events ------------------------------------------------------------
   prose.addEventListener("click", e => {
     const w = e.target.closest(".w"); if(!w) return; e.stopPropagation(); tapNode(w);
@@ -370,6 +724,9 @@
     $("uMei").setAttribute("aria-pressed", u==="mei"?"true":"false");
     tappedThisSession.clear();
     if(curDoc) openDoc(curDoc.id);              // reload with this user's status
+    refreshLibrary();                           // coverage %s are per-user
+    if($("vocabShelf").open) refreshVocab();
+    if($("progressShelf").open) refreshProgress();
   }
   $("uAlex").addEventListener("click", () => { if(user!=="alex") setUser("alex"); });
   $("uMei").addEventListener("click", () => { if(user!=="mei") setUser("mei"); });
@@ -379,6 +736,7 @@
     $("simp").setAttribute("aria-pressed", s==="simp"?"true":"false");
     $("trad").setAttribute("aria-pressed", s==="trad"?"true":"false");
     render(); if(openNode) openPop(nodes[+openNode.el.dataset.i]);
+    if($("vocabShelf").open) refreshVocab();
   }
   $("simp").addEventListener("click", () => setScript("simp"));
   $("trad").addEventListener("click", () => setScript("trad"));
@@ -414,9 +772,9 @@
   });
   $("bank").addEventListener("click", bankSession);
 
-  window.addEventListener("pagehide", flushExposuresBeacon);
+  window.addEventListener("pagehide", () => { savePos(); flushExposuresBeacon(); });
   document.addEventListener("visibilitychange", () => {
-    if(document.visibilityState === "hidden") flushExposuresBeacon();
+    if(document.visibilityState === "hidden"){ savePos(); flushExposuresBeacon(); }
   });
 
   // ---- boot --------------------------------------------------------------
